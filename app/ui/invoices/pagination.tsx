@@ -7,10 +7,18 @@ import { generatePagination } from '@/app/lib/utils';
 import { usePathname, useSearchParams } from 'next/navigation';
 
 export default function Pagination({ totalPages }: { totalPages: number }) {
-  const pathname = usePathname()
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const currentPage = Number(searchParams.get('page')) || 1;
   // NOTE: Uncomment this code in Chapter 10
 
   const allPages = generatePagination(currentPage, totalPages);
+
+  function createPageURL(pageNumber: number| string){
+    const param = new URLSearchParams(searchParams)
+    param.set('page',pageNumber.toString());
+    return `${pathname}?${param.toString()}`
+  }
 
   return (
     <>
